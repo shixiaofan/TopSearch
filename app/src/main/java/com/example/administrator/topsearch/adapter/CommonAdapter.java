@@ -13,8 +13,6 @@ import java.util.List;
  * Created by Administrator on 2017/9/29 0029.
  */
 public abstract class CommonAdapter<T> extends BaseAdapter {
-
-
            protected Context mContext;
    protected List<T> mData;
      protected int mLayoutId;
@@ -50,7 +48,9 @@ public abstract class CommonAdapter<T> extends BaseAdapter {
                ViewHolder holder = ViewHolder.getHolder(mContext,convertView,mLayoutId,parent,position);
                 convert(holder,position);
                 return holder.getConvertView();
-           }
+
+          }
+
 
             public abstract void convert(ViewHolder holder,int position);
  }

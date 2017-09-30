@@ -18,6 +18,8 @@
         </activity>
         <activity android:name=".myview.SearchView">
         </activity>
+        <activity android:name=".utils.JsonUtils">
+        </activity>
     </application>
 
 </manifest>

@@ -8,13 +8,30 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
+
 import com.example.administrator.topsearch.adapter.SearchAdapter;
 import com.example.administrator.topsearch.bean.Bean;
 import com.example.administrator.topsearch.myview.SearchView;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends Activity implements SearchView.SearchViewListener {
+    private String josnData =
+            "[{\"iconId\":22222,\"title\":\"松仁玉米88\",\"content\":\"玉米\",\"comments\":\"1\"}," +
+            "{\"iconId\":2222,\"title\":\"松仁玉米1\",\"content\":\"松仁玉米\",\"comments\":\"2\"}," +
+            "{\"iconId\":22221,\"title\":\"松仁玉米2\",\"content\":\"松仁玉米\",\"comments\":\"3\"}," +
+            "{\"iconId\":22222,\"title\":\"松仁玉米3\",\"content\":\"松仁玉米\",\"comments\":\"4\"}," +
+            "{\"iconId\":22223,\"title\":\"松仁玉米4\",\"content\":\"松仁玉米\",\"comments\":\"5\"}," +
+            "{\"iconId\":22224,\"title\":\"松仁玉米5\",\"content\":\"松仁玉米\",\"comments\":\"6\"}," +
+            "{\"iconId\":22224,\"title\":\"松仁玉米6\",\"content\":\"松仁玉米\",\"comments\":\"7\"}," +
+            "{\"iconId\":22224,\"title\":\"松仁玉米7\",\"content\":\"松仁玉米\",\"comments\":\"8\"}," +
+            "{\"iconId\":22224,\"title\":\"松仁玉米8\",\"content\":\"松仁玉米\",\"comments\":\"9\"}," +
+            "{\"iconId\":22224,\"title\":\"松仁玉米9\",\"content\":\"松仁玉米\",\"comments\":\"10\"}," +
+            "{\"iconId\":22224,\"title\":\"松仁玉米11\",\"content\":\"松仁玉米\",\"comments\":\"11\"}]";
     private ListView lvResults;//搜索结果列表项
     private SearchView searchView;
     private ArrayAdapter<String> hintAdapter;
@@ -34,16 +51,16 @@ public class MainActivity extends Activity implements SearchView.SearchViewListe
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_main);
-        initData();
+            initData();
+
         initViews();
     }
 
-    /**
-     * 初始化视图
-     */
     private void initViews() {
         lvResults = (ListView) findViewById(R.id.main_lv_search_results);
         searchView = (SearchView) findViewById(R.id.main_search_layout);
+        praseFromJosn(josnData);
+        registerForContextMenu(lvResults);
         //设置监听
         searchView.setSearchViewListener(this);
         //设置adapter
@@ -57,21 +74,22 @@ public class MainActivity extends Activity implements SearchView.SearchViewListe
             }
         });
     }
+    public List praseFromJosn(String jsonData) {
+        Type ListType = new TypeToken<ArrayList<Bean>>() {
+        }.getType();
+        Gson gson = new Gson();
+        dbData = gson.fromJson(jsonData, ListType);
+        return dbData;
 
-    private void initData() {
-        getDbData();
-        getHintData();
+    }
+
+
+    private void initData()  {
         getAutoCompleteData(null);
+        getHintData();
         getResultData(null);
     }
 
-    private void getDbData() {
-        int size = 100;
-        dbData = new ArrayList<>(size);
-        for (int i = 0; i < size; i++) {
-            dbData.add(new Bean(R.drawable.ic_launcher_round, "android开发必备技能" + (i + 1), "Android自定义view——自定义搜索view", i * 20 + 2 + ""));
-        }
-    }
 
     /**
      * 获取热搜版data 和adapter
